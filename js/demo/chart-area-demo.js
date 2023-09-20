@@ -2,6 +2,15 @@
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
+let today = new Date();
+
+let year = today.getFullYear(); // 년도
+let month = today.getMonth() + 1;  // 월
+let date = today.getDate();  // 날짜
+let day = today.getDay();  // 요일
+const week = ['일', '월', '화', '수', '목', '금', '토'];
+let dayOfWeek = week[day];
+
 function number_format(number, decimals, dec_point, thousands_sep) {
   // *     example: number_format(1234.56, 2, ',', ' ');
   // *     return: '1 234,56'
@@ -32,24 +41,29 @@ var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"],
     datasets: [{
-      label: "Earnings",
+      label: "의심영상 ",
       lineTension: 0.3,
       backgroundColor: "rgba(78, 115, 223, 0.05)",
-      borderColor: "rgba(78, 115, 223, 1)",
+      borderColor: "#f6c23e",
       pointRadius: 3,
-      pointBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointBorderColor: "rgba(78, 115, 223, 1)",
+      pointBackgroundColor: "#f6c23e",
+      pointBorderColor: "#f6c23e",
       pointHoverRadius: 3,
       pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
       pointHoverBorderColor: "rgba(78, 115, 223, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
+      data: [0, 2, 3, 0, 5, 0, 0],
     }],
   },
   options: {
+    title: {
+      display: true,
+      fontSize: 15,
+      text: year + ' 년 ' + month + ' 월 ' + date + ' 일 ' + dayOfWeek + '요일'
+    },
     maintainAspectRatio: false,
     layout: {
       padding: {
@@ -78,7 +92,7 @@ var myLineChart = new Chart(ctx, {
           padding: 10,
           // Include a dollar sign in the ticks
           callback: function(value, index, values) {
-            return '$' + number_format(value);
+            return number_format(value) + ' 개';
           }
         },
         gridLines: {
@@ -110,7 +124,7 @@ var myLineChart = new Chart(ctx, {
       callbacks: {
         label: function(tooltipItem, chart) {
           var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+          return datasetLabel + number_format(tooltipItem.yLabel) + ' 개';
         }
       }
     }
